@@ -1,0 +1,140 @@
+<div class=" h-dvh flex justify-evenly items-center bg-white">
+
+
+    <!-- <a routerLink="/" routerLinkActive="font-bold">go back</a> -->
+    <form
+        class="h-10/12 flex flex-col  justify-between gap-4 shadow-xl px-15 rounded-2xl bg-white text-left w-2/4 py-10">
+
+
+
+
+        <div class="flex flex-col justify-start">
+            <p class="text-2xl font-semibold text-gray-950 pb-4">Create new list</p>
+            <!-- <input type="text" c [formControl]="title" placeholder="(Title here)"
+                class="text-2xl text-center font-semibold text-gray-950 " /> -->
+
+            <div class="flex justify-between mb-5  border-b border-gray-400 items-center "> <label for="todoitem"
+                    class="font-medium ">TITLE
+                    HERE</label>
+
+            </div>
+            <div class="flex justify-evenly mb-2">
+                <input type="text" [formControl]="title" placeholder="Place your title here"
+                    class="p-1 border pl-2 font-normal text-gray-400 border-gray-300 rounded w-full" />
+            </div>
+
+            <div class="flex justify-between mb-5  border-b border-gray-400 items-center "> <label for="todoitem"
+                    class="font-medium ">ADD
+                    ITEM</label>
+                <button class=" text-white w-8 h-8  cursor-pointer" type="button" (click)="pushToList()">
+                    <span class="material-icons text-blue-500 ">add</span>
+                </button>
+
+            </div>
+            <div class="flex justify-evenly mb-2">
+                <input type="text" [formControl]="item" class="p-1 border border-gray-300 rounded w-full" />
+            </div>
+
+            <div class="flex justify-evenly mb-2">
+                <select [formControl]="itemPriority" class="mb-2 p-2 border border-gray-300 rounded w-full">
+                    <option value="" disabled selected>Select priority</option>
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select>
+
+            </div>
+
+
+            <div class="flex flex-col justify-around">
+                <label for="todoitem" class="text-base font-medium mb-5 border-b border-gray-400 py-2">TODO</label>
+
+                <ol>
+                    <li *ngFor="let task of unsavedItems; let i = index"
+                        class="flex items-center mb-4 p-2 justify-between border-b border-gray-300">
+                        <div class="flex items-center">
+                            <div class="size-4 rounded-full mr-2" [ngClass]="{
+                          'bg-green-500': task.priority === 'Low',
+                          'bg-orange-500': task.priority === 'Medium',
+                          'bg-red-500': task.priority === 'High'
+                        }"></div>
+
+                            <!-- Display text or input if in edit mode -->
+                            <span *ngIf="editIndex !== i" (click)="toggleCompleted(task)">
+                                {{ task.text }}
+                            </span>
+
+                            <input *ngIf="editIndex === i" [(ngModel)]="editText" [ngModelOptions]="{standalone: true}"
+                                class="border p-1 rounded w-48" (keyup.enter)="saveEdit(i)" />
+
+
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <span *ngIf="editIndex !== i" class="material-icons text-gray-600 cursor-pointer"
+                                (click)="startEdit(i, task)">edit</span>
+                            <span *ngIf="editIndex === i" class="material-icons text-green-600 cursor-pointer"
+                                (click)="saveEdit(i)">check</span>
+                            <span class="material-icons text-gray-600 cursor-pointer"
+                                (click)="deleteItem(i)">delete</span>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+
+        <!-- button para mag save sa DB -->
+        <button class="bg-blue-400 flex justify-center w-1/4 items-center p-2 rounded-xl text-white" type="button"
+            (click)="saveList()">
+            <span class="material-icons text-gray-200 ">add</span>
+            Save</button>
+
+        <!-- display the motherfucking list-->
+        <!-- <button class="bg-orange-400 p-2 text-white" type="button" (click)="displayList()">Display List</button> -->
+
+    </form>
+
+
+
+
+</div>
+
+
+
+
+
+<div class="hidden">
+    <ol>
+        <li *ngFor="let task of unsavedItems" (click)="toggleCompleted(task)" class="cursor-pointer">
+            <span [class.line-through]="task.completed">{{ task.text }}</span>
+        </li>
+    </ol>
+
+
+    <!-- Loop through todos and their items -->
+    <ol class="h-52 w-24 flex flex-col items-center justify-center">
+        <p>Fetched List:</p>
+        <li *ngFor="let todo of list">
+            <p>Todo: {{ todo.title }}</p>
+            <!-- <p>Priority level: {{ todo.priority }}</p> Show priority -->
+            <ul>
+                <!-- Loop through the items of each todo -->
+                <li *ngFor="let item of todo.items">
+                    <!-- Display the text of each item -->
+                    <p>{{ item.text }}</p>
+                    <!-- Optionally, add a checkbox to show completion status -->
+                    <input type="checkbox" [checked]="item.completed" disabled />
+                </li>
+            </ul>
+        </li>
+    </ol>
+
+</div>

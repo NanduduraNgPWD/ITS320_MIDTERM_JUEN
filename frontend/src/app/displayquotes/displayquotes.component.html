@@ -1,0 +1,12 @@
+<div class="bg-gray-100 p-5 rounded-lg max-w-xl shadow-md font-poppins mx-auto mt-24">
+    @for (quote of quotes; track quote) {
+    <div [ngClass]="quote.author === 'Aristotle' ? 'border-red-500' : 'border-blue-500'"
+        class="bg-white border-l-4 p-4 mb-3 rounded-md shadow-sm">
+        <p class="text-gray-800">"{{ quote.quote }}" -
+            <span class="text-gray-700">{{ quote.author }}</span>
+        </p>
+    </div>
+    }
+</div>
+
+<!-- <div>hello</div> -->
